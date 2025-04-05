@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WinUI_ASP.NET_Basics.Data;
 
@@ -11,9 +12,11 @@ using WinUI_ASP.NET_Basics.Data;
 namespace WinUI_ASP.NET_Basics.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250405123248_pizzatoppinglist")]
+    partial class pizzatoppinglist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +54,7 @@ namespace WinUI_ASP.NET_Basics.Migrations
                         new
                         {
                             Id = 1,
-                            OrderedAt = new DateTime(2025, 4, 5, 15, 59, 47, 85, DateTimeKind.Local).AddTicks(6113),
+                            OrderedAt = new DateTime(2025, 4, 5, 14, 32, 48, 216, DateTimeKind.Local).AddTicks(2581),
                             StatusId = 1,
                             UserId = 3
                         });
@@ -72,15 +75,10 @@ namespace WinUI_ASP.NET_Basics.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("Pizzas");
 
@@ -326,7 +324,7 @@ namespace WinUI_ASP.NET_Basics.Migrations
                             Id = 1,
                             Email = "admin@pizzaria.com",
                             Name = "Admin User",
-                            Password = "$2a$11$nvBH8bcLyrv2frLXRllWk.y2CJRPsAj70ztBkLXogYc42KVd9BqP6",
+                            Password = "$2a$11$KQGk2SzU52t.eKnS1oOOs.e6w0esdF/HF0GXL.3rvg5l6mvxN5DoG",
                             RoleId = 1
                         },
                         new
@@ -334,7 +332,7 @@ namespace WinUI_ASP.NET_Basics.Migrations
                             Id = 2,
                             Email = "employee@pizzaria.com",
                             Name = "Employee User",
-                            Password = "$2a$11$d2OlzD37fdWX0HGmlxoXzuubp56IK4GgX17jEh6bU.zpEnY6h3TCS",
+                            Password = "$2a$11$vKi7pVt2CsE8PyR30xeLwOG6KkbVBrUJ2yvNrSAE8R/XSARVzRCk6",
                             RoleId = 2
                         },
                         new
@@ -342,7 +340,7 @@ namespace WinUI_ASP.NET_Basics.Migrations
                             Id = 3,
                             Email = "user@pizzaria.com",
                             Name = "Regular User",
-                            Password = "$2a$11$ZpTv3aE5ENf0nB13L1d7J.tAR7aGpNv/8TXBiEAWkQ8BxlngKucai",
+                            Password = "$2a$11$B5iUAF5Mah3zyxqiwnHRi.YAD4eOD6PiNjqVYNkZtX6hsEwoNCNa2",
                             RoleId = 3
                         });
                 });
@@ -364,13 +362,6 @@ namespace WinUI_ASP.NET_Basics.Migrations
                     b.Navigation("Status");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("WinUI_ASP.NET_Basics.Models.Pizza", b =>
-                {
-                    b.HasOne("WinUI_ASP.NET_Basics.Models.Order", null)
-                        .WithMany("Pizzas")
-                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("WinUI_ASP.NET_Basics.Models.PizzaOrder", b =>
@@ -424,11 +415,6 @@ namespace WinUI_ASP.NET_Basics.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("WinUI_ASP.NET_Basics.Models.Order", b =>
-                {
-                    b.Navigation("Pizzas");
                 });
 
             modelBuilder.Entity("WinUI_ASP.NET_Basics.Models.Pizza", b =>

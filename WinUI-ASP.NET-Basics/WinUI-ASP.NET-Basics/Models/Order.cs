@@ -8,5 +8,6 @@
         public int StatusId { get; set; }
         public Status? Status { get; set; }
         public DateTime OrderedAt { get; set; }
+        public List<Pizza> Pizzas { get; set; } = new();
     }
 }
