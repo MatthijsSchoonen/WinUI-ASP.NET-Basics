@@ -12,6 +12,8 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using WinUI_Basics.Models;
+using WinUI_Basics.Views;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -23,14 +25,21 @@ namespace WinUI_Basics
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        public static User? _LoggedInUser;
         public MainWindow()
         {
             this.InitializeComponent();
+            ToLogin();
         }
 
-        private void myButton_Click(object sender, RoutedEventArgs e)
+        public void ToLogin()
         {
-            myButton.Content = "Clicked";
+            MainFrame.Content = new LoginPage(this);
+        }
+
+        public void ToRegister()
+        {
+            MainFrame.Content = new RegisterPage(this);
         }
     }
 }

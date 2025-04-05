@@ -9,7 +9,17 @@
     mc:Ignorable="d"
     Title="WinUI-Basics">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
-    </StackPanel>
+    <Grid>
+        
+        <NavigationView x:Name="Nav">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Icon="Play" Content="Menu Item1" Tag="SamplePage1" />
+                <NavigationViewItem Icon="Save" Content="Menu Item2" Tag="SamplePage2" />
+                <NavigationViewItem Icon="Refresh" Content="Menu Item3" Tag="SamplePage3" />
+                <NavigationViewItem Icon="Download" Content="Menu Item4" Tag="SamplePage4" />
+            </NavigationView.MenuItems>
+        </NavigationView>
+        
+        <Frame x:Name="MainFrame" />
+    </Grid>
 </Window>

@@ -15,6 +15,10 @@
   <ItemGroup>
     <Content Remove="Assets\2Q.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Views\LoginPage.xaml" />
+    <None Remove="Views\RegisterPage.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -55,9 +59,18 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Views\" />
+    <Folder Include="Views\Pizza\" />
+    <Folder Include="Views\Order\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\RegisterPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\LoginPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <!--

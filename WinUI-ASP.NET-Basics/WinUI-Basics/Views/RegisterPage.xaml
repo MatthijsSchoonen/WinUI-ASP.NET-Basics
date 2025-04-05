@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="WinUI_Basics.Views.RegisterPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinUI_Basics.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Background="#FFFAE4">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Source="/Assets/PizzeriaLogo.png" Width="150" Margin="0 50"></Image>
+
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#261A19" BorderThickness="1" Padding="20" CornerRadius="10" Background="#F4E9CF" Width="400">
+                <TextBlock Text="Register" FontSize="26" HorizontalAlignment="Center" Margin="0 5"/>
+                <TextBox Width="300" FontSize="16" PlaceholderText="Name" Margin="0 5" x:Name="Name"/>
+                <TextBox Width="300" FontSize="16" PlaceholderText="Email" Margin="0 5" x:Name="Email"/>
+                <PasswordBox Width="300" FontSize="16" PlaceholderText="Password" Margin="0 5" x:Name="Password"/>
+                <PasswordBox Width="300" FontSize="16" PlaceholderText="Password Confirm" Margin="0 5" x:Name="PasswordConfirm"/>
+                <TextBlock x:Name="ErrorMessage" FontSize="16" HorizontalAlignment="Center" Foreground="Red"/>
+                <Button Content="Register" FontSize="16" Width="200" HorizontalAlignment="Center" Margin="0 5" Click="Register_Click"/>
+                <TextBlock HorizontalAlignment="Center" FontSize="16" Margin="0 5">Already Have an account? <Hyperlink Foreground="#C03719" Click="Login_Click" > Login here</Hyperlink></TextBlock>
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</Page>
