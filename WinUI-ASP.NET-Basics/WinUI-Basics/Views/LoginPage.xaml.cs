@@ -48,7 +48,7 @@ namespace WinUI_Basics.Views
             bool success = await AccountController.CheckUserCredentials(Email.Text, Password.Password);
             if(success)
             {
-                //add Navigation to main page
+                _mainWindow.ToMenuPage();
             }
             else
             {

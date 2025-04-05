@@ -17,6 +17,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Views\LoginPage.xaml" />
+    <None Remove="Views\Pizza\MenuPage.xaml" />
     <None Remove="Views\RegisterPage.xaml" />
   </ItemGroup>
 
@@ -59,8 +60,12 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Pizza\" />
     <Folder Include="Views\Order\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\Pizza\MenuPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\RegisterPage.xaml">
