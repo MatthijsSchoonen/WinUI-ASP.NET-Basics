@@ -3,6 +3,8 @@ using WinUI_ASP.NET_Basics.Data;
 using WinUI_ASP.NET_Basics.Models;
 using WinUI_ASP.NET_Basics.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Crypto;
+using Microsoft.AspNetCore.Identity;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,7 +30,7 @@ namespace WinUI_ASP.NET_Basics.Controllers
         }
 
         // GET api/<UserController>/GetUser5
-        [HttpGet("GetUser{id}")]
+        [HttpGet("GetUser")]
         public ActionResult<User> GetUser(int id)
         {
             using (AppDbContext db = new())
@@ -59,6 +61,11 @@ namespace WinUI_ASP.NET_Basics.Controllers
                     if (IsEmailOrUsernameTaken(user.Email, user.Name))
                     {
                         return BadRequest("Email or username already taken");
+                    }
+
+                    if (!IsPasswordValid(user.Password))
+                    {
+                        return BadRequest("Password must atleast contain 8 character a symbol a number and a upper and lower case letter");
                     }
                     EmailHelper emailHelper = new();
 
@@ -148,7 +155,7 @@ namespace WinUI_ASP.NET_Basics.Controllers
                     db.Users.Update(user);
                     db.SaveChanges();
 
-                    return Ok();
+                    return Ok(user);
                 }
             }
             catch
@@ -157,11 +164,68 @@ namespace WinUI_ASP.NET_Basics.Controllers
             }
         }
 
+        [HttpPut("UpdatePassword")]
 
-        // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<User> UpdatePassword(int id, string password)
         {
+            try
+            {
+                if(id == 0 || string.IsNullOrEmpty(password))
+                {
+                    return BadRequest();
+                }
+
+                if (!IsPasswordValid(password))
+                {
+                    return BadRequest("Password must atleast contain 8 character a symbol a number and a upper and lower case letter");
+                }
+
+                using (AppDbContext db = new())
+                {
+                    User? user = db.Users.Where(u => u.Id == id).FirstOrDefault();
+                    if(user == null)
+                    {
+                        return BadRequest("user not found");
+                    }
+
+                    user.Password = BCrypt.Net.BCrypt.HashPassword(password);
+
+                    db.Users.Update(user);
+                    db.SaveChanges();
+                    return Ok(user);
+                }   
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+
+        // DELETE api/<UserController>/DeleteUser
+        [HttpDelete("DeleteUser")]
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                using (AppDbContext db = new()) {
+
+                    User? user = db.Users.Where(u => u.Id == id).FirstOrDefault();
+                    if(user == null)
+                    {
+                        return BadRequest("User not found");
+                    }
+
+                    db.Users.Remove(user);
+                    db.SaveChanges();
+                    return Ok();
+                }
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
         }
 
         private bool IsEmailOrUsernameTaken(string email, string username)
@@ -171,5 +235,22 @@ namespace WinUI_ASP.NET_Basics.Controllers
                 return db.Users.Any(u => u.Email == email || u.Name == username);
             }
         }
+
+        private bool IsPasswordValid(string password)
+        {
+            if (string.IsNullOrEmpty(password))
+            {
+                return false;
+            }
+
+            bool hasMinimumLength = password.Length >= 8;
+            bool hasUpperCaseLetter = password.Any(char.IsUpper);
+            bool hasLowerCaseLetter = password.Any(char.IsLower);
+            bool hasDigit = password.Any(char.IsDigit);
+            bool hasSymbol = password.Any(ch => !char.IsLetterOrDigit(ch));
+
+            return hasMinimumLength && hasUpperCaseLetter && hasLowerCaseLetter && hasDigit && hasSymbol;
+        }
+
     }
 }
