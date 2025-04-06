@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace WinUI_Basics.Models
 {
-    class Toppings
+    public class Toppings
     {
         public int Id { get; set; }
-        public required string Name { get; set; }
+        public string Name { get; set; }
     }
 }

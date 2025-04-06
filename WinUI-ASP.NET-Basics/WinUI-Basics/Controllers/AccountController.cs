@@ -17,12 +17,14 @@ namespace WinUI_Basics.Controllers
             {
                 var client = new HttpClient();
                 var request = new HttpRequestMessage(HttpMethod.Get, $"https://localhost:7114/api/User/Login?email={email}&password={password}");
-                request.Headers.Add("accept", "text/plain");
+                request.Headers.Add("accept", "application/json");
                 var response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
                 if (response.IsSuccessStatusCode)
                 {
-                    HttpContent content = response.Content;
+                    var content = await response.Content.ReadAsStringAsync();
+                    var user = JsonSerializer.Deserialize<User>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    MainWindow._LoggedInUser = user;
                     return true;
                 }
                 return false;
@@ -32,6 +34,7 @@ namespace WinUI_Basics.Controllers
                 return false;
             }
         }
+
 
         static public async Task<bool> RegisterUser(User user)
         {

@@ -10,16 +10,55 @@
     Title="WinUI-Basics">
 
     <Grid>
-        
-        <NavigationView x:Name="Nav">
+
+        <NavigationView x:Name="Nav" IsBackButtonVisible="Collapsed" IsSettingsVisible="False" IsPaneVisible="False"  IsPaneToggleButtonVisible="False" Background="#C03719" >
             <NavigationView.MenuItems>
-                <NavigationViewItem Icon="Play" Content="Menu Item1" Tag="SamplePage1" />
-                <NavigationViewItem Icon="Save" Content="Menu Item2" Tag="SamplePage2" />
-                <NavigationViewItem Icon="Refresh" Content="Menu Item3" Tag="SamplePage3" />
-                <NavigationViewItem Icon="Download" Content="Menu Item4" Tag="SamplePage4" />
+                <Image Source="/Assets/PizzeriaLogo.png" Width="150" HorizontalAlignment="Left"></Image>
+                <!-- Section for logged-in users -->
+                <NavigationViewItemSeparator />
+                <NavigationViewItem Icon="Home" Content="Menu" Tag="MenuPage" Foreground="#F3C291"/>
+                <NavigationViewItem Foreground="#F3C291">
+                    <NavigationViewItem.Icon>
+                        <BitmapIcon UriSource="ms-appx:///Assets/Cart.png" />
+                    </NavigationViewItem.Icon>
+                    <NavigationViewItem.Content>
+                        Cart
+                    </NavigationViewItem.Content>
+                    <NavigationViewItem.Tag>
+                        CartPage
+                    </NavigationViewItem.Tag>
+                </NavigationViewItem>
+                <NavigationViewItem Icon="list" Content="Receipts" Tag="ReceiptsPage" Foreground="#F3C291" />
+                <NavigationViewItemSeparator />
+
+                <!-- Section for employees -->
+                <NavigationViewItemHeader Content="Employee" Tag="EmployeeHeader" Foreground="#F3C291" />
+                <NavigationViewItem Icon="List" Content="Orders" Tag="OrdersPage" Foreground="#F3C291" />
+                <NavigationViewItem Foreground="#F3C291">
+                    <NavigationViewItem.Icon>
+                        <BitmapIcon UriSource="ms-appx:///Assets/Pizza.png" />
+                    </NavigationViewItem.Icon>
+                    <NavigationViewItem.Content>
+                        Pizzas
+                    </NavigationViewItem.Content>
+                    <NavigationViewItem.Tag>
+                        PizzasPage
+                    </NavigationViewItem.Tag>
+                </NavigationViewItem>
+                <NavigationViewItem Icon="List" Content="Toppings" Tag="ToppingsPage" Foreground="#F3C291"/>
+                <NavigationViewItemSeparator />
+
+                <!-- Section for admins -->
+                <NavigationViewItemHeader Content="Admin" Tag="AdminHeader" Foreground="#F3C291"/>
+                <NavigationViewItem Icon="People" Content="Users" Tag="UsersPage" Foreground="#F3C291"/>
+ 
             </NavigationView.MenuItems>
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem Icon="Contact" Content="Profile" Tag="ProfilePage" Foreground="#F3C291" />
+                <NavigationViewItem Icon="Back" Content="Logout" Tag="Logout" Foreground="#F3C291"/>
+            </NavigationView.FooterMenuItems>
+            <Frame x:Name="MainFrame" />
         </NavigationView>
-        
-        <Frame x:Name="MainFrame" />
+
     </Grid>
 </Window>
