@@ -7,5 +7,6 @@
         public required decimal Price { get; set; }
         public string? ImgUrl { get; set; }
         public List<PizzaToppings> PizzaToppings { get; set; } = new();
+        public List<PizzaOrder> PizzaOrders { get; set; } = new();
     }
 }

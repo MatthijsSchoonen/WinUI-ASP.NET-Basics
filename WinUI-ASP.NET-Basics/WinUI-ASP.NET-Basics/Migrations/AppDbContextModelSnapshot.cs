@@ -51,7 +51,7 @@ namespace WinUI_ASP.NET_Basics.Migrations
                         new
                         {
                             Id = 1,
-                            OrderedAt = new DateTime(2025, 4, 5, 15, 59, 47, 85, DateTimeKind.Local).AddTicks(6113),
+                            OrderedAt = new DateTime(2025, 4, 7, 8, 58, 53, 336, DateTimeKind.Local).AddTicks(9498),
                             StatusId = 1,
                             UserId = 3
                         });
@@ -83,6 +83,8 @@ namespace WinUI_ASP.NET_Basics.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("Pizzas");
+
+                    b.HasAnnotation("Relational:JsonPropertyName", "pizzas");
 
                     b.HasData(
                         new
@@ -147,17 +149,12 @@ namespace WinUI_ASP.NET_Basics.Migrations
                     b.Property<int>("PizzaId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PizzaId1")
-                        .HasColumnType("int");
-
                     b.Property<int>("ToppingId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PizzaId");
-
-                    b.HasIndex("PizzaId1");
 
                     b.HasIndex("ToppingId");
 
@@ -326,7 +323,7 @@ namespace WinUI_ASP.NET_Basics.Migrations
                             Id = 1,
                             Email = "admin@pizzaria.com",
                             Name = "Admin User",
-                            Password = "$2a$11$nvBH8bcLyrv2frLXRllWk.y2CJRPsAj70ztBkLXogYc42KVd9BqP6",
+                            Password = "$2a$11$PRbfEbIhkDEHC0CaacH.N.34hfC1iXHH6YHTiiEswcRGTu55DqM5.",
                             RoleId = 1
                         },
                         new
@@ -334,7 +331,7 @@ namespace WinUI_ASP.NET_Basics.Migrations
                             Id = 2,
                             Email = "employee@pizzaria.com",
                             Name = "Employee User",
-                            Password = "$2a$11$d2OlzD37fdWX0HGmlxoXzuubp56IK4GgX17jEh6bU.zpEnY6h3TCS",
+                            Password = "$2a$11$DHuIqIY7LxYjED8IrcQh2uM.NQtA8LPiK6FdY1xzuxVJWTr1nF3YO",
                             RoleId = 2
                         },
                         new
@@ -342,7 +339,7 @@ namespace WinUI_ASP.NET_Basics.Migrations
                             Id = 3,
                             Email = "user@pizzaria.com",
                             Name = "Regular User",
-                            Password = "$2a$11$ZpTv3aE5ENf0nB13L1d7J.tAR7aGpNv/8TXBiEAWkQ8BxlngKucai",
+                            Password = "$2a$11$VBg8KOyXGR63MVnLPpeh4OsGTVDPlPDo7wbk1NyA5zj3rcdMUpJdO",
                             RoleId = 3
                         });
                 });
@@ -376,13 +373,13 @@ namespace WinUI_ASP.NET_Basics.Migrations
             modelBuilder.Entity("WinUI_ASP.NET_Basics.Models.PizzaOrder", b =>
                 {
                     b.HasOne("WinUI_ASP.NET_Basics.Models.Order", "Order")
-                        .WithMany()
+                        .WithMany("PizzaOrders")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WinUI_ASP.NET_Basics.Models.Pizza", "Pizza")
-                        .WithMany()
+                        .WithMany("PizzaOrders")
                         .HasForeignKey("PizzaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -395,14 +392,10 @@ namespace WinUI_ASP.NET_Basics.Migrations
             modelBuilder.Entity("WinUI_ASP.NET_Basics.Models.PizzaToppings", b =>
                 {
                     b.HasOne("WinUI_ASP.NET_Basics.Models.Pizza", "Pizza")
-                        .WithMany()
+                        .WithMany("PizzaToppings")
                         .HasForeignKey("PizzaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("WinUI_ASP.NET_Basics.Models.Pizza", null)
-                        .WithMany("PizzaToppings")
-                        .HasForeignKey("PizzaId1");
 
                     b.HasOne("WinUI_ASP.NET_Basics.Models.Topping", "Topping")
                         .WithMany()
@@ -428,11 +421,15 @@ namespace WinUI_ASP.NET_Basics.Migrations
 
             modelBuilder.Entity("WinUI_ASP.NET_Basics.Models.Order", b =>
                 {
+                    b.Navigation("PizzaOrders");
+
                     b.Navigation("Pizzas");
                 });
 
             modelBuilder.Entity("WinUI_ASP.NET_Basics.Models.Pizza", b =>
                 {
+                    b.Navigation("PizzaOrders");
+
                     b.Navigation("PizzaToppings");
                 });
 #pragma warning restore 612, 618

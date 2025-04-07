@@ -23,7 +23,6 @@ namespace WinUI_Basics.Controllers
             response.EnsureSuccessStatusCode();
 
             var responseBody = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(responseBody);
 
             var pizzas = JsonSerializer.Deserialize<ObservableCollection<Pizza>>(responseBody, new JsonSerializerOptions
             {

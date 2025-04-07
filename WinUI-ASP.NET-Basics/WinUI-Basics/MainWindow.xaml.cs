@@ -14,6 +14,7 @@ using WinUI_Basics.Models;
 using WinUI_Basics.Views;
 using System.Collections.ObjectModel;
 using Windows.Networking.NetworkOperators;
+using System;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,7 +27,7 @@ namespace WinUI_Basics
     public sealed partial class MainWindow : Window
     {
         public static User? _LoggedInUser;
-        public static ObservableCollection<Pizza> _Cart = new();
+        public static ObservableCollection<Models.Pizza> _Cart = new();
         public MainWindow()
         {
             this.InitializeComponent();
@@ -55,6 +56,10 @@ namespace WinUI_Basics
             UpdateNavigationView();
         }
 
+        public void ToCartPage()
+        {
+            MainFrame.Content = new CartPage();
+        }
 
         private void UpdateNavigationView()
         {
@@ -121,7 +126,7 @@ namespace WinUI_Basics
                         ToMenuPage();
                         break;
                     case "CartPage":
-                        //to cart page
+                        ToCartPage();
                         break;
                     case "ReceiptsPage":
                         //to receipts page
@@ -157,5 +162,20 @@ namespace WinUI_Basics
                 MainFrame.GoBack();
             }
         }
+
+
+        public static async void ShowNotification(string message, string title, XamlRoot xamlRoot)
+        {
+            ContentDialog dialog = new ContentDialog
+            {
+                Title = title,
+                Content = message,
+                CloseButtonText = "Close",
+                XamlRoot = xamlRoot
+            };
+
+            var result = await dialog.ShowAsync();
+        }
+
     }
 }

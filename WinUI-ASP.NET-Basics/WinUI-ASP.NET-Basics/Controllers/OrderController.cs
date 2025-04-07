@@ -20,7 +20,8 @@ namespace WinUI_ASP.NET_Basics.Controllers
                 using (AppDbContext db = new())
                 {
                     List<Order> orders = db.Orders
-                        .Include(o => o.Pizzas)
+                        .Include(o => o.PizzaOrders)
+                        .ThenInclude(po => po.Pizza)
                         .ThenInclude(p => p.PizzaToppings)
                         .ThenInclude(pt => pt.Topping)
                         .ToList();
@@ -36,13 +37,13 @@ namespace WinUI_ASP.NET_Basics.Controllers
                         order.UserId,
                         order.StatusId,
                         order.OrderedAt,
-                        Pizzas = order.Pizzas.Select(pizza => new
+                        Pizzas = order.PizzaOrders.Select(po => new
                         {
-                            pizza.Id,
-                            pizza.Name,
-                            pizza.Price,
-                            pizza.ImgUrl,
-                            Toppings = pizza.PizzaToppings.Select(pt => new { pt.Topping.Id, pt.Topping.Name }).ToList()
+                            po.Pizza.Id,
+                            po.Pizza.Name,
+                            po.Pizza.Price,
+                            po.Pizza.ImgUrl,
+                            Toppings = po.Pizza.PizzaToppings.Select(pt => new { pt.Topping.Id, pt.Topping.Name }).ToList()
                         }).ToList()
                     }).ToList();
 
@@ -65,7 +66,8 @@ namespace WinUI_ASP.NET_Basics.Controllers
                 {
                     Order? order = db.Orders
                         .Where(o => o.Id == id)
-                        .Include(o => o.Pizzas)
+                        .Include(o => o.PizzaOrders)
+                        .ThenInclude(po => po.Pizza)
                         .ThenInclude(p => p.PizzaToppings)
                         .ThenInclude(pt => pt.Topping)
                         .FirstOrDefault();
@@ -81,13 +83,13 @@ namespace WinUI_ASP.NET_Basics.Controllers
                         order.UserId,
                         order.StatusId,
                         order.OrderedAt,
-                        Pizzas = order.Pizzas.Select(pizza => new
+                        Pizzas = order.PizzaOrders.Select(po => new
                         {
-                            pizza.Id,
-                            pizza.Name,
-                            pizza.Price,
-                            pizza.ImgUrl,
-                            Toppings = pizza.PizzaToppings.Select(pt => new { pt.Topping.Id, pt.Topping.Name }).ToList()
+                            po.Pizza.Id,
+                            po.Pizza.Name,
+                            po.Pizza.Price,
+                            po.Pizza.ImgUrl,
+                            Toppings = po.Pizza.PizzaToppings.Select(pt => new { pt.Topping.Id, pt.Topping.Name }).ToList()
                         }).ToList()
                     };
 
@@ -113,8 +115,16 @@ namespace WinUI_ASP.NET_Basics.Controllers
                         return BadRequest("Order is null");
                     }
 
+                    Order newOrder = new Order
+                    {
+                        UserId = order.UserId,
+                        StatusId = order.StatusId,
+                        OrderedAt = DateTime.Now,
+                        PizzaOrders = new List<PizzaOrder>()
+                    };
+
                     // Add the order to the database
-                    db.Orders.Add(order);
+                    db.Orders.Add(newOrder);
                     db.SaveChanges();
 
                     // Add the pizzas to the order
@@ -123,12 +133,16 @@ namespace WinUI_ASP.NET_Basics.Controllers
                         var existingPizza = db.Pizzas.Find(pizza.Id);
                         if (existingPizza != null)
                         {
-                            order.Pizzas.Add(existingPizza);
+                            db.PizzaOrders.Add(new PizzaOrder
+                            {
+                                OrderId = newOrder.Id,
+                                PizzaId = existingPizza.Id
+                            });
                         }
                     }
                     db.SaveChanges();
 
-                    return Ok(order);
+                    return Ok();
                 }
             }
             catch (Exception ex)
@@ -136,7 +150,6 @@ namespace WinUI_ASP.NET_Basics.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
         // PUT api/<OrderController>/EditOrder
         [HttpPut("EditOrder")]
@@ -147,7 +160,7 @@ namespace WinUI_ASP.NET_Basics.Controllers
                 using (AppDbContext db = new())
                 {
                     var existingOrder = db.Orders
-                        .Include(o => o.Pizzas)
+                        .Include(o => o.PizzaOrders)
                         .FirstOrDefault(o => o.Id == order.Id);
 
                     if (existingOrder == null)
@@ -160,27 +173,28 @@ namespace WinUI_ASP.NET_Basics.Controllers
                     existingOrder.StatusId = order.StatusId;
                     existingOrder.OrderedAt = order.OrderedAt;
 
-                    // Get existing pizzas
-                    var existingPizzas = existingOrder.Pizzas.ToList();
+                    // Get existing pizza orders
+                    var existingPizzaOrders = existingOrder.PizzaOrders.ToList();
 
-                    // Remove pizzas that are no longer in the new order
-                    foreach (var existingPizza in existingPizzas)
+                    // Remove pizza orders that are no longer in the new order
+                    foreach (var existingPizzaOrder in existingPizzaOrders)
                     {
-                        if (!order.Pizzas.Any(p => p.Id == existingPizza.Id))
+                        if (!order.PizzaOrders.Any(po => po.PizzaId == existingPizzaOrder.PizzaId))
                         {
-                            existingOrder.Pizzas.Remove(existingPizza);
+                            db.PizzaOrders.Remove(existingPizzaOrder);
                         }
                     }
 
-                    // Add new pizzas that are not in the existing order
-                    foreach (var newPizza in order.Pizzas)
+                    // Add new pizza orders that are not in the existing order
+                    foreach (var newPizzaOrder in order.PizzaOrders)
                     {
-                        if (!existingPizzas.Any(ep => ep.Id == newPizza.Id))
+                        if (!existingPizzaOrders.Any(epo => epo.PizzaId == newPizzaOrder.PizzaId))
                         {
-                            var pizzaToAdd = db.Pizzas.Find(newPizza.Id);
+                            var pizzaToAdd = db.Pizzas.Find(newPizzaOrder.PizzaId);
                             if (pizzaToAdd != null)
                             {
-                                existingOrder.Pizzas.Add(pizzaToAdd);
+                                newPizzaOrder.OrderId = existingOrder.Id;
+                                db.PizzaOrders.Add(newPizzaOrder);
                             }
                         }
                     }
@@ -229,7 +243,8 @@ namespace WinUI_ASP.NET_Basics.Controllers
                 using (AppDbContext db = new())
                 {
                     Order? order = db.Orders
-                        .Include(o => o.Pizzas)
+                        .Include(o => o.PizzaOrders)
+                        .ThenInclude(po => po.Pizza)
                         .ThenInclude(p => p.PizzaToppings)
                         .FirstOrDefault(o => o.Id == id);
 

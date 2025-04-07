@@ -9,30 +9,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WinUI_ASP.NET_Basics.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class first : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Pizzas",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    ImgUrl = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Pizzas", x => x.Id);
-                })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
@@ -107,33 +89,6 @@ namespace WinUI_ASP.NET_Basics.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "PizzaToppings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    PizzaId = table.Column<int>(type: "int", nullable: false),
-                    ToppingId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PizzaToppings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PizzaToppings_Pizzas_PizzaId",
-                        column: x => x.PizzaId,
-                        principalTable: "Pizzas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PizzaToppings_Toppings_ToppingId",
-                        column: x => x.ToppingId,
-                        principalTable: "Toppings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -158,6 +113,30 @@ namespace WinUI_ASP.NET_Basics.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Pizzas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    ImgUrl = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    OrderId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pizzas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Pizzas_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -188,14 +167,41 @@ namespace WinUI_ASP.NET_Basics.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "PizzaToppings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    PizzaId = table.Column<int>(type: "int", nullable: false),
+                    ToppingId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PizzaToppings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PizzaToppings_Pizzas_PizzaId",
+                        column: x => x.PizzaId,
+                        principalTable: "Pizzas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PizzaToppings_Toppings_ToppingId",
+                        column: x => x.ToppingId,
+                        principalTable: "Toppings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.InsertData(
                 table: "Pizzas",
-                columns: new[] { "Id", "ImgUrl", "Name", "Price" },
+                columns: new[] { "Id", "ImgUrl", "Name", "OrderId", "Price" },
                 values: new object[,]
                 {
-                    { 1, null, "Margherita", 8.99m },
-                    { 2, null, "Pepperoni", 9.99m },
-                    { 3, null, "Hawaiian", 10.99m }
+                    { 1, null, "Margherita", null, 8.99m },
+                    { 2, null, "Pepperoni", null, 9.99m },
+                    { 3, null, "Hawaiian", null, 10.99m }
                 });
 
             migrationBuilder.InsertData(
@@ -244,15 +250,15 @@ namespace WinUI_ASP.NET_Basics.Migrations
                 columns: new[] { "Id", "Email", "Name", "Password", "RoleId" },
                 values: new object[,]
                 {
-                    { 1, "admin@pizzaria.com", "Admin User", "$2a$11$0s/KO7Ana0PRpfd6Pq8PaOh3yH7Eqg7p45MclqcIgGC53whWE/ZCK", 1 },
-                    { 2, "employee@pizzaria.com", "Employee User", "$2a$11$ZPH2iZd/qelLLLETIo49j.QcshsXlYYu8uI9FSJR.PqL7TVNpPmOm", 2 },
-                    { 3, "user@pizzaria.com", "Regular User", "$2a$11$Sgl8YhoPkcARcLSnMNPlC.u.xkbIi5VJw2VC6u/nzT/ODsVkhQutK", 3 }
+                    { 1, "admin@pizzaria.com", "Admin User", "$2a$11$PRbfEbIhkDEHC0CaacH.N.34hfC1iXHH6YHTiiEswcRGTu55DqM5.", 1 },
+                    { 2, "employee@pizzaria.com", "Employee User", "$2a$11$DHuIqIY7LxYjED8IrcQh2uM.NQtA8LPiK6FdY1xzuxVJWTr1nF3YO", 2 },
+                    { 3, "user@pizzaria.com", "Regular User", "$2a$11$VBg8KOyXGR63MVnLPpeh4OsGTVDPlPDo7wbk1NyA5zj3rcdMUpJdO", 3 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Orders",
                 columns: new[] { "Id", "OrderedAt", "StatusId", "UserId" },
-                values: new object[] { 1, new DateTime(2025, 4, 4, 18, 34, 59, 416, DateTimeKind.Local).AddTicks(7468), 1, 3 });
+                values: new object[] { 1, new DateTime(2025, 4, 7, 8, 58, 53, 336, DateTimeKind.Local).AddTicks(9498), 1, 3 });
 
             migrationBuilder.InsertData(
                 table: "PizzaOrders",
@@ -280,6 +286,11 @@ namespace WinUI_ASP.NET_Basics.Migrations
                 column: "PizzaId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Pizzas_OrderId",
+                table: "Pizzas",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PizzaToppings_PizzaId",
                 table: "PizzaToppings",
                 column: "PizzaId");
@@ -305,13 +316,13 @@ namespace WinUI_ASP.NET_Basics.Migrations
                 name: "PizzaToppings");
 
             migrationBuilder.DropTable(
-                name: "Orders");
-
-            migrationBuilder.DropTable(
                 name: "Pizzas");
 
             migrationBuilder.DropTable(
                 name: "Toppings");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Statuses");

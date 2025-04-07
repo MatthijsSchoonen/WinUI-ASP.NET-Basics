@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace WinUI_ASP.NET_Basics.Models
+namespace WinUI_Basics.Models
 {
     public class Order
     {
@@ -11,8 +14,6 @@ namespace WinUI_ASP.NET_Basics.Models
         public int StatusId { get; set; }
         public Status? Status { get; set; }
         public DateTime OrderedAt { get; set; }
-        public List<PizzaOrder> PizzaOrders { get; set; } = new();
-        [JsonPropertyName("pizzas")]
         public List<Pizza> Pizzas { get; set; } = new();
     }
 }

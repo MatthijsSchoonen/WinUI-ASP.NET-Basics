@@ -1,13 +1,11 @@
 ﻿using WinUI_ASP.NET_Basics.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using BCrypt.Net;
 
 namespace WinUI_ASP.NET_Basics.Data
 {
     public class AppDbContext : DbContext
     {
-
         public DbSet<Pizza> Pizzas { get; set; }
         public DbSet<Topping> Toppings { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -16,9 +14,9 @@ namespace WinUI_ASP.NET_Basics.Data
         public DbSet<Status> Statuses { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
             optionsBuilder.UseMySql("server=localhost;port=3306;user=root;password=;database=Pizzaria", ServerVersion.Parse("8.0.30"));
             base.OnConfiguring(optionsBuilder);
         }
@@ -40,12 +38,12 @@ namespace WinUI_ASP.NET_Basics.Data
 
             modelBuilder.Entity<PizzaOrder>()
                 .HasOne(po => po.Pizza)
-                .WithMany()
+                .WithMany(p => p.PizzaOrders)
                 .HasForeignKey(po => po.PizzaId);
 
             modelBuilder.Entity<PizzaOrder>()
                 .HasOne(po => po.Order)
-                .WithMany()
+                .WithMany(o => o.PizzaOrders)
                 .HasForeignKey(po => po.OrderId);
 
             modelBuilder.Entity<User>()
@@ -55,7 +53,7 @@ namespace WinUI_ASP.NET_Basics.Data
 
             modelBuilder.Entity<PizzaToppings>()
                 .HasOne(pt => pt.Pizza)
-                .WithMany()
+                .WithMany(p => p.PizzaToppings)
                 .HasForeignKey(pt => pt.PizzaId);
 
             modelBuilder.Entity<PizzaToppings>()
@@ -110,5 +108,4 @@ namespace WinUI_ASP.NET_Basics.Data
             );
         }
     }
-   
 }

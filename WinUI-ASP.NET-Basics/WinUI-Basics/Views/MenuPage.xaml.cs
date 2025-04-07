@@ -80,8 +80,11 @@ namespace WinUI_Basics.Views
             if (pizza != null)
             {
                 MainWindow._Cart.Add(pizza);
+                MainWindow.ShowNotification("Added to cart", $"Pizza {pizza.Name} has been added to your cart.", this.XamlRoot);
             }
-        }
+           
+        } 
+
 
         private void ResetFiltersButton_Click(object sender, RoutedEventArgs e)
         {
