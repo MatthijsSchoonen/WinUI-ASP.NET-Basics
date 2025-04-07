@@ -12,21 +12,22 @@
 
     <Grid Background="#FFFAE4">
         <StackPanel Margin="20">
-            <TextBlock Text="Your Cart" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
-            <ListView x:Name="PizzaListView" Margin="0,0,0,20">
+            <TextBlock Text="Your Cart" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" HorizontalAlignment="Center"/>
+            <ListView x:Name="PizzaListView" >
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="localData:Pizza">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <TextBlock Text="{x:Bind Name}" FontSize="18" Width="200"/>
-                            <TextBlock Text="{x:Bind Price}" FontSize="18" Width="100"/>
+                            <TextBlock  FontSize="18" Width="100">€ <Run Text="{x:Bind Price}"  FontSize="18"></Run></TextBlock>
                             <Button Content="Remove" Click="RemovePizza_Click" Tag="{x:Bind}" Margin="10,0,0,0"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <TextBlock Text="Total:" FontSize="18" FontWeight="Bold"/>
-            <TextBlock x:Name="TotalPriceTextBlock" FontSize="18" Margin="0,0,0,20"/>
-            <Button Content="Order" Click="OrderButton_Click" HorizontalAlignment="Center" Width="100"/>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="300" Margin="0 20">
+            <TextBlock Text="Total:" FontSize="18" FontWeight="Bold">€ <Run x:Name="TotalPriceTextBlock" FontSize="18"></Run></TextBlock>
+            <Button Content="Order" Click="OrderButton_Click" HorizontalAlignment="Right" Width="100"/>
         </StackPanel>
     </Grid>
 </Page>
