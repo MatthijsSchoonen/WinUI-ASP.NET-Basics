@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using WinUI_Basics.Models;
 
@@ -12,6 +13,36 @@ namespace WinUI_Basics.Controllers
 {
     class OrderController
     {
+        public static async Task<ObservableCollection<Order>> GetAllOrders()
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7114/api/Order/GetAllOrders");
+            request.Headers.Add("accept", "*/*");
+            var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                return new ObservableCollection<Order>();
+            }
+
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            var Orders = JsonSerializer.Deserialize<ObservableCollection<Order>>(responseBody, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            });
+
+            if (Orders == null)
+            {
+                return new ObservableCollection<Order>();
+            }
+
+            return Orders;
+
+
+        }
+
         public static async Task<bool> CreateOrder(ObservableCollection<Pizza> pizzas)
         {
             try

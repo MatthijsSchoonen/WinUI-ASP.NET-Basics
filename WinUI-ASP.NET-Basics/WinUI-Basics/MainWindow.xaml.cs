@@ -61,6 +61,11 @@ namespace WinUI_Basics
             MainFrame.Content = new CartPage();
         }
 
+        public void ToReceiptPage()
+        {
+            MainFrame.Content = new ReceiptPage();
+        }
+
         private void UpdateNavigationView()
         {
             Nav.IsPaneVisible = true;
@@ -129,7 +134,7 @@ namespace WinUI_Basics
                         ToCartPage();
                         break;
                     case "ReceiptsPage":
-                        //to receipts page
+                        ToReceiptPage();
                         break;
                     case "OrdersPage":
                         //to orders page

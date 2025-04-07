@@ -20,11 +20,12 @@ namespace WinUI_ASP.NET_Basics.Controllers
                 using (AppDbContext db = new())
                 {
                     List<Order> orders = db.Orders
-                        .Include(o => o.PizzaOrders)
-                        .ThenInclude(po => po.Pizza)
-                        .ThenInclude(p => p.PizzaToppings)
-                        .ThenInclude(pt => pt.Topping)
-                        .ToList();
+                            .Include(o => o.Status)
+                            .Include(o => o.PizzaOrders)
+                            .ThenInclude(po => po.Pizza)
+                            .ThenInclude(p => p.PizzaToppings)
+                            .ThenInclude(pt => pt.Topping)
+                            .ToList();
 
                     if (orders.Count == 0)
                     {
@@ -36,6 +37,11 @@ namespace WinUI_ASP.NET_Basics.Controllers
                         order.Id,
                         order.UserId,
                         order.StatusId,
+                        Status = new
+                        {
+                            order.Status.Id,
+                            order.Status.Name
+                        },
                         order.OrderedAt,
                         Pizzas = order.PizzaOrders.Select(po => new
                         {
@@ -65,12 +71,13 @@ namespace WinUI_ASP.NET_Basics.Controllers
                 using (AppDbContext db = new())
                 {
                     Order? order = db.Orders
-                        .Where(o => o.Id == id)
-                        .Include(o => o.PizzaOrders)
-                        .ThenInclude(po => po.Pizza)
-                        .ThenInclude(p => p.PizzaToppings)
-                        .ThenInclude(pt => pt.Topping)
-                        .FirstOrDefault();
+                            .Where(o => o.Id == id)
+                            .Include(o => o.Status)
+                            .Include(o => o.PizzaOrders)
+                            .ThenInclude(po => po.Pizza)
+                            .ThenInclude(p => p.PizzaToppings)
+                            .ThenInclude(pt => pt.Topping)
+                            .FirstOrDefault();
 
                     if (order == null)
                     {
@@ -82,6 +89,11 @@ namespace WinUI_ASP.NET_Basics.Controllers
                         order.Id,
                         order.UserId,
                         order.StatusId,
+                        Status = new
+                        {
+                            order.Status.Id,
+                            order.Status.Name
+                        },
                         order.OrderedAt,
                         Pizzas = order.PizzaOrders.Select(po => new
                         {

@@ -15,5 +15,7 @@ namespace WinUI_Basics.Models
         public Status? Status { get; set; }
         public DateTime OrderedAt { get; set; }
         public List<Pizza> Pizzas { get; set; } = new();
+        public decimal? TotalPrice => Pizzas.Sum(p => p.Price);
+
     }
 }
