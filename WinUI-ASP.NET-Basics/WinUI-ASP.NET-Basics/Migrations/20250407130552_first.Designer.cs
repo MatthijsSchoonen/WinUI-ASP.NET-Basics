@@ -12,7 +12,7 @@ using WinUI_ASP.NET_Basics.Data;
 namespace WinUI_ASP.NET_Basics.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250407065853_first")]
+    [Migration("20250407130552_first")]
     partial class first
     {
         /// <inheritdoc />
@@ -54,7 +54,7 @@ namespace WinUI_ASP.NET_Basics.Migrations
                         new
                         {
                             Id = 1,
-                            OrderedAt = new DateTime(2025, 4, 7, 8, 58, 53, 336, DateTimeKind.Local).AddTicks(9498),
+                            OrderedAt = new DateTime(2025, 4, 7, 15, 5, 52, 322, DateTimeKind.Local).AddTicks(3034),
                             StatusId = 1,
                             UserId = 3
                         });
@@ -269,7 +269,12 @@ namespace WinUI_ASP.NET_Basics.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("PizzaId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PizzaId");
 
                     b.ToTable("Toppings");
 
@@ -326,7 +331,7 @@ namespace WinUI_ASP.NET_Basics.Migrations
                             Id = 1,
                             Email = "admin@pizzaria.com",
                             Name = "Admin User",
-                            Password = "$2a$11$PRbfEbIhkDEHC0CaacH.N.34hfC1iXHH6YHTiiEswcRGTu55DqM5.",
+                            Password = "$2a$11$wVwJVddVgrkhhYaV.L9Deezbh3Fx5OSFEJE6TvXDKrTcYcKm4mkau",
                             RoleId = 1
                         },
                         new
@@ -334,7 +339,7 @@ namespace WinUI_ASP.NET_Basics.Migrations
                             Id = 2,
                             Email = "employee@pizzaria.com",
                             Name = "Employee User",
-                            Password = "$2a$11$DHuIqIY7LxYjED8IrcQh2uM.NQtA8LPiK6FdY1xzuxVJWTr1nF3YO",
+                            Password = "$2a$11$oQ/hE3hop9nkhUudarpVbO0tihpo7Ai0O2n8KwnYQBed88urTgF8i",
                             RoleId = 2
                         },
                         new
@@ -342,7 +347,7 @@ namespace WinUI_ASP.NET_Basics.Migrations
                             Id = 3,
                             Email = "user@pizzaria.com",
                             Name = "Regular User",
-                            Password = "$2a$11$VBg8KOyXGR63MVnLPpeh4OsGTVDPlPDo7wbk1NyA5zj3rcdMUpJdO",
+                            Password = "$2a$11$1sqURiNcv0B47ALuR9riI.NpZ5/zCASrGm5M3ZKt/bosq05qNA8PC",
                             RoleId = 3
                         });
                 });
@@ -411,6 +416,13 @@ namespace WinUI_ASP.NET_Basics.Migrations
                     b.Navigation("Topping");
                 });
 
+            modelBuilder.Entity("WinUI_ASP.NET_Basics.Models.Topping", b =>
+                {
+                    b.HasOne("WinUI_ASP.NET_Basics.Models.Pizza", null)
+                        .WithMany("toppings")
+                        .HasForeignKey("PizzaId");
+                });
+
             modelBuilder.Entity("WinUI_ASP.NET_Basics.Models.User", b =>
                 {
                     b.HasOne("WinUI_ASP.NET_Basics.Models.Role", "Role")
@@ -434,6 +446,8 @@ namespace WinUI_ASP.NET_Basics.Migrations
                     b.Navigation("PizzaOrders");
 
                     b.Navigation("PizzaToppings");
+
+                    b.Navigation("toppings");
                 });
 #pragma warning restore 612, 618
         }

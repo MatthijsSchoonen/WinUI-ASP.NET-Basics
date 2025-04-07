@@ -98,15 +98,27 @@ namespace WinUI_ASP.NET_Basics.Controllers
                     {
                         return BadRequest("Name or Price is empty");
                     }
+              
+
+                    Pizza NewPizza = new Pizza{
+                        Name = pizza.Name,
+                        Price = pizza.Price,
+                        ImgUrl = pizza.ImgUrl
+                    }
+                    ;
 
                     // Add the pizza to the database
-                    db.Pizzas.Add(pizza);
+                    db.Pizzas.Add(NewPizza);
                     db.SaveChanges();
 
                     // Add the toppings to the database
-                    foreach (var pizzaTopping in pizza.PizzaToppings)
+                    foreach (var topping in pizza.toppings)
                     {
-                        pizzaTopping.PizzaId = pizza.Id; 
+                        PizzaToppings pizzaTopping = new PizzaToppings
+                        {
+                            ToppingId = topping.Id,
+                            PizzaId = NewPizza.Id
+                        };
                         db.PizzaToppings.Add(pizzaTopping);
                     }
                     db.SaveChanges();
@@ -119,7 +131,6 @@ namespace WinUI_ASP.NET_Basics.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
         // PUT api/<PizzaController>/5
         [HttpPut("EditPizza")]
