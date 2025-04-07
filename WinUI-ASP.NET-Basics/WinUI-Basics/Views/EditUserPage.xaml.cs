@@ -51,6 +51,7 @@ namespace WinUI_Basics.Views
             _user.Name = UserName.Text;
             _user.Email = UserEmail.Text;
             _user.RoleId = ((Role)UserRole.SelectedItem).Id;
+            _user.Role = ((Role)UserRole.SelectedItem);
 
             bool success = await AccountController.EditUser(_user);
             if (!success)
