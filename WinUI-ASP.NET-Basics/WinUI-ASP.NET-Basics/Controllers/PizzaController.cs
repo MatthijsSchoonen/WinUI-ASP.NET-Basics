@@ -154,26 +154,18 @@ namespace WinUI_ASP.NET_Basics.Controllers
                     existingPizza.Price = pizza.Price;
                     existingPizza.ImgUrl = pizza.ImgUrl;
 
-                    // Get existing toppings
-                    var existingToppings = existingPizza.PizzaToppings.ToList();
+                    // Remove existing toppings
+                    db.PizzaToppings.RemoveRange(existingPizza.PizzaToppings);
 
-                    // Remove toppings that are no longer in the new pizza
-                    foreach (var existingTopping in existingToppings)
+                    // Add new toppings
+                    foreach (var topping in pizza.toppings)
                     {
-                        if (!pizza.PizzaToppings.Any(pt => pt.ToppingId == existingTopping.ToppingId))
+                        PizzaToppings pizzaTopping = new PizzaToppings
                         {
-                            db.PizzaToppings.Remove(existingTopping);
-                        }
-                    }
-
-                    // Add new toppings that are not in the existing pizza
-                    foreach (var newTopping in pizza.PizzaToppings)
-                    {
-                        if (!existingToppings.Any(et => et.ToppingId == newTopping.ToppingId))
-                        {
-                            newTopping.PizzaId = existingPizza.Id;
-                            db.PizzaToppings.Add(newTopping);
-                        }
+                            ToppingId = topping.Id,
+                            PizzaId = existingPizza.Id
+                        };
+                        db.PizzaToppings.Add(pizzaTopping);
                     }
 
                     db.SaveChanges();
@@ -186,6 +178,7 @@ namespace WinUI_ASP.NET_Basics.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
 
         // DELETE api/<PizzaController>/5
         [HttpDelete("DeletePizza")]

@@ -98,6 +98,12 @@ namespace WinUI_Basics.Views
             MainWindow.ShowNotification("Pizza created successfully!", "Success", this.XamlRoot);
             _mainWindow.ToPizzaPage();
         }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            _mainWindow.ToPizzaPage();
+        }
+
     }
 
     public class UploadImageResponse
