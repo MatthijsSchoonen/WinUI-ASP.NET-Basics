@@ -96,6 +96,15 @@ namespace WinUI_Basics
         {
             MainFrame.Content = new EditToppingPage(this, topping);
         }
+
+        public void ToUserPage()
+        {
+            MainFrame.Content = new UserPage(this);
+        }
+        public void ToEditUserPage(User user)
+        {
+            MainFrame.Content = new EditUserPage(this, user);
+        }
         private void UpdateNavigationView()
         {
             Nav.IsPaneVisible = true;
@@ -176,7 +185,7 @@ namespace WinUI_Basics
                         ToToppingPage();
                         break;
                     case "UsersPage":
-                        //to users page
+                        ToUserPage();
                         break;
                     case "ProfilePage":
                         //to profile page

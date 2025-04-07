@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="WinUI_Basics.Views.UserPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinUI_Basics.Views"
+    xmlns:localData="using:WinUI_Basics.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Background="#FFFAE4">
+        <StackPanel Margin="20">
+            <TextBlock Text="Users" FontSize="26" HorizontalAlignment="Center" Margin="0 5"/>
+
+            <!-- Header Row -->
+            <StackPanel Background="#F4E9CF" HorizontalAlignment="Center" Padding="20" CornerRadius="10" BorderBrush="#261A19" BorderThickness="2">
+                <Grid Margin="5,0,0,10" HorizontalAlignment="Center" Background="#F4E9CF">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Name" Foreground="#261A19" Grid.Column="0" FontWeight="Bold"/>
+                    <TextBlock Text="Email" Foreground="#261A19" Grid.Column="1" FontWeight="Bold"/>
+                    <TextBlock Text="Role" Foreground="#261A19" Grid.Column="2" FontWeight="Bold"/>
+                    <TextBlock Text="Action" Foreground="#261A19" Grid.Column="3" HorizontalAlignment="Right" FontWeight="Bold"/>
+                </Grid>
+
+                <ListView ItemsSource="{x:Bind Users}" HorizontalAlignment="Center" Background="#F4E9CF">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="localData:User">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="200"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{x:Bind Name}" Foreground="#261A19" Grid.Column="0"/>
+                                <TextBlock Text="{x:Bind Email}" Foreground="#261A19" Grid.Column="1"/>
+                                <TextBlock Text="{x:Bind Role.Name}" Foreground="#261A19" Grid.Column="2"/>
+                                <Button Content="Edit User" Click="EditUserButton_Click" Tag="{Binding}" Grid.Column="3" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>
