@@ -1,6 +1,3 @@
-Here is the `ImageController.cs` file with added comments:
-
-```csharp
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,6 +47,3 @@ namespace WinUI_ASP.NET_Basics.Controllers
         }
     }
 }
-```
-
-The comments explain the purpose and functionality of each part of the code.
