@@ -66,6 +66,11 @@ namespace WinUI_Basics
             MainFrame.Content = new ReceiptPage();
         }
 
+        public void ToOrderPage()
+        {
+            MainFrame.Content = new OrderPage();
+        }
+
         private void UpdateNavigationView()
         {
             Nav.IsPaneVisible = true;
@@ -137,7 +142,7 @@ namespace WinUI_Basics
                         ToReceiptPage();
                         break;
                     case "OrdersPage":
-                        //to orders page
+                        ToOrderPage();
                         break;
                     case "PizzasPage":
                         //to pizzas page

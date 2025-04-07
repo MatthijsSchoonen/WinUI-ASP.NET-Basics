@@ -15,32 +15,37 @@ namespace WinUI_Basics.Controllers
     {
         public static async Task<ObservableCollection<Order>> GetAllOrders()
         {
-            var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7114/api/Order/GetAllOrders");
-            request.Headers.Add("accept", "*/*");
-            var response = await client.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-            if (!response.IsSuccessStatusCode)
+            try
+            {
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost:7114/api/Order/GetAllOrders");
+                request.Headers.Add("accept", "*/*");
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new ObservableCollection<Order>();
+                }
+
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                var Orders = JsonSerializer.Deserialize<ObservableCollection<Order>>(responseBody, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                });
+
+                if (Orders == null)
+                {
+                    return new ObservableCollection<Order>();
+                }
+
+                return Orders;
+            }
+            catch (Exception ex)
             {
                 return new ObservableCollection<Order>();
             }
-
-            var responseBody = await response.Content.ReadAsStringAsync();
-
-            var Orders = JsonSerializer.Deserialize<ObservableCollection<Order>>(responseBody, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-            });
-
-            if (Orders == null)
-            {
-                return new ObservableCollection<Order>();
-            }
-
-            return Orders;
-
-
         }
 
         public static async Task<bool> CreateOrder(ObservableCollection<Pizza> pizzas)
@@ -88,6 +93,29 @@ namespace WinUI_Basics.Controllers
             {
                 return false;
             }
+        }
+
+        public static async Task<bool> UpdateStatus(int orderId, int statusId)
+        {
+            try
+            {
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Put, $"https://localhost:7114/api/Order/UpdateOrderStatus?id={orderId}&statusId={statusId}");
+                request.Headers.Add("accept", "*/*");
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+                if(!response.IsSuccessStatusCode)
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+           
+
         }
     }
 }
