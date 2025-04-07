@@ -13,7 +13,7 @@
     <Grid Background="#FFFAE4">
         <StackPanel Margin="20">
             <TextBlock Text="Orders" FontSize="26" HorizontalAlignment="Center" Margin="0 5"/>
-            <StackPanel Orientation="Horizontal" Margin="10">
+            <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
                 <ComboBox x:Name="StatusFilter" Width="200" PlaceholderText="Select Status" SelectionChanged="StatusFilter_SelectionChanged">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="localData:Status">
@@ -23,21 +23,23 @@
                 </ComboBox>
                 <Button Content="Reset Filters" Click="ResetFiltersButton_Click" Margin="10,0,0,0"/>
             </StackPanel>
-            <GridView ItemsSource="{x:Bind FilteredOrders}" >
+            <GridView ItemsSource="{x:Bind FilteredOrders}" HorizontalAlignment="Center">
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="localData:Order">
-                        <StackPanel Background="#F4E9CF" Padding="20" Margin="0" BorderBrush="#261A19" BorderThickness="2"  CornerRadius="10" Width="300">
+                        <StackPanel Background="#F4E9CF" Padding="20" Margin="0" BorderBrush="#261A19" BorderThickness="2"  CornerRadius="10" Width="300" Height="300">
                             <TextBlock FontSize="16">Order ID: <Run Text="{Binding Id}"/></TextBlock>
                             <TextBlock FontSize="16">Status: <Run Text="{Binding Status.Name}"/></TextBlock>
                             <TextBlock FontSize="16">Ordered At: <Run Text="{Binding OrderedAt}"/></TextBlock>
                             <TextBlock FontSize="16" Margin="0,10,0,0">Pizzas:</TextBlock>
-                            <ListView ItemsSource="{Binding Pizzas}" IsItemClickEnabled="False">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate x:DataType="localData:Pizza">
-                                        <TextBlock Text="{Binding Name}" />
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
+                            <ScrollViewer ScrollViewer.VerticalScrollMode="Enabled" Height="125">
+                                <ListView ItemsSource="{Binding Pizzas}" IsItemClickEnabled="False" ScrollViewer.VerticalScrollMode="Enabled">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="localData:Pizza">
+                                            <TextBlock Text="{Binding Name}" />
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </ScrollViewer>
                             <Button Content="Update Status" Click="UpdateStatusButton_Click" Tag="{Binding}" Visibility="{Binding StatusId, Converter={StaticResource StatusToVisibilityConverter}}"/>
                         </StackPanel>
                     </DataTemplate>

@@ -13,7 +13,7 @@
     <Grid Background="#FFFAE4">
         <StackPanel Margin="20">
             <TextBlock Text="Menu" FontSize="26" HorizontalAlignment="Center" Margin="0 5"/>
-            <StackPanel Orientation="Horizontal" Margin="10">
+            <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
                 <TextBox x:Name="SearchBox" Width="200" PlaceholderText="Search Pizzas" TextChanged="SearchBox_TextChanged"/>
                 <ComboBox x:Name="ToppingsFilter" Width="200" PlaceholderText="Select Topping" SelectionChanged="ToppingsFilter_SelectionChanged">
                     <ComboBox.ItemTemplate>
@@ -24,7 +24,7 @@
                 </ComboBox>
                 <Button Content="Reset Filters" Click="ResetFiltersButton_Click" Margin="10,0,0,0"/>
             </StackPanel>
-            <GridView ItemsSource="{x:Bind FilteredPizzas}" >
+            <GridView ItemsSource="{x:Bind FilteredPizzas}" HorizontalAlignment="Center">
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="localData:Pizza">
                         <StackPanel Background="#F4E9CF" Padding="20" Margin="0" BorderBrush="#261A19" BorderThickness="2"  CornerRadius="10" Width="300">

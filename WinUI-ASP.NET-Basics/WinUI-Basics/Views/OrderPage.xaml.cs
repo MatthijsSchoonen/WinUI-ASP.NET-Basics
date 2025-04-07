@@ -86,7 +86,9 @@ namespace WinUI_Basics.Views
         private void ResetFiltersButton_Click(object sender, RoutedEventArgs e)
         {
             StatusFilter.SelectedItem = null;
+            LoadOrders();
             FilterOrders();
+            
         }
     }
 }
