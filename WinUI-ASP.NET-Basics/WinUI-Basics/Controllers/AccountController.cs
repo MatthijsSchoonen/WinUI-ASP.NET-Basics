@@ -124,6 +124,9 @@ namespace WinUI_Basics.Controllers
                 response.EnsureSuccessStatusCode();
                 if (response.IsSuccessStatusCode)
                 {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var user = JsonSerializer.Deserialize<User>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    MainWindow._LoggedInUser = user;
                     return true;
                 }
                 return false;

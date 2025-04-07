@@ -105,6 +105,15 @@ namespace WinUI_Basics
         {
             MainFrame.Content = new EditUserPage(this, user);
         }
+        public void ToProfilePage()
+        {
+            MainFrame.Content = new ProfilePage(this);
+        }
+        public void ToEditProfilePage()
+        {
+            MainFrame.Content = new EditProfilePage(this);
+        }
+
         private void UpdateNavigationView()
         {
             Nav.IsPaneVisible = true;
@@ -188,7 +197,7 @@ namespace WinUI_Basics
                         ToUserPage();
                         break;
                     case "ProfilePage":
-                        //to profile page
+                        ToProfilePage();
                         break;
                     case "Logout":
                         _LoggedInUser = null;

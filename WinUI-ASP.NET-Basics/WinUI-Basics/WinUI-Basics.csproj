@@ -20,12 +20,14 @@
     <None Remove="Views\CreatePizzaPage.xaml" />
     <None Remove="Views\CreateToppingPage.xaml" />
     <None Remove="Views\EditPizzaPage.xaml" />
+    <None Remove="Views\EditProfilePage.xaml" />
     <None Remove="Views\EditToppingPage.xaml" />
     <None Remove="Views\EditUserPage.xaml" />
     <None Remove="Views\LoginPage.xaml" />
     <None Remove="Views\OrderPage.xaml" />
     <None Remove="Views\PizzaPage.xaml" />
     <None Remove="Views\Pizza\MenuPage.xaml" />
+    <None Remove="Views\ProfilePage.xaml" />
     <None Remove="Views\ReceiptPage.xaml" />
     <None Remove="Views\RegisterPage.xaml" />
     <None Remove="Views\ToppingPage.xaml" />
@@ -69,6 +71,16 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250310001" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\EditProfilePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\ProfilePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\EditUserPage.xaml">

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="WinUI_Basics.Views.ProfilePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinUI_Basics.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Background="#FFFAE4">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Source="/Assets/PizzeriaLogo.png" Width="150" Margin="0 50"></Image>
+
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#261A19" BorderThickness="1" Padding="20" CornerRadius="10" Background="#F4E9CF" Width="400">
+                <TextBlock Text="Profile" FontSize="26" HorizontalAlignment="Center" Margin="0 5"/>
+                <TextBlock Text="Name:" FontSize="16" Margin="0 5"/>
+                <TextBlock x:Name="NameTextBlock" FontSize="16" Margin="0 5"/>
+                <TextBlock Text="Email:" FontSize="16" Margin="0 5"/>
+                <TextBlock x:Name="EmailTextBlock" FontSize="16" Margin="0 5"/>
+                <TextBlock Text="Role:" FontSize="16" Margin="0 5"/>
+                <TextBlock x:Name="RoleTextBlock" FontSize="16" Margin="0 5"/>
+                <Button Content="Edit Profile" FontSize="16" Width="200" HorizontalAlignment="Center" Margin="0 5" Click="EditProfile_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>
