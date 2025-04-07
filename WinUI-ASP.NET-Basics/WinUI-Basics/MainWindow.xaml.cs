@@ -71,6 +71,19 @@ namespace WinUI_Basics
             MainFrame.Content = new OrderPage();
         }
 
+        public void ToPizzaPage()
+        {
+            MainFrame.Content = new PizzaPage(this);
+        }
+        public void ToCreatePizzaPage()
+        {
+            MainFrame.Content = new CreatePizzaPage(this);
+        }
+        public void ToEditPizzaPage(Pizza pizza)
+        {
+            MainFrame.Content = new EditPizzaPage(this, pizza);
+        }
+
         private void UpdateNavigationView()
         {
             Nav.IsPaneVisible = true;
@@ -145,7 +158,7 @@ namespace WinUI_Basics
                         ToOrderPage();
                         break;
                     case "PizzasPage":
-                        //to pizzas page
+                        ToPizzaPage();
                         break;
                     case "ToppingsPage":
                         //to toppings page

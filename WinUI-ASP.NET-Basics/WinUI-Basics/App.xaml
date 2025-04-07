@@ -13,6 +13,7 @@
             </ResourceDictionary.MergedDictionaries>
             <helpers:NullToPlaceholderConverter x:Key="NullToPlaceholderConverter" />
             <helpers:StatusToVisibilityConverter x:Key="StatusToVisibilityConverter"/>
+            <helpers:ToppingsConverter x:Key="ToppingsConverter"/>
             <!-- Other app resources here -->
         </ResourceDictionary>
     </Application.Resources>
