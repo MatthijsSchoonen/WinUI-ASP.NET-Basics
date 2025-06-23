@@ -170,7 +170,7 @@ namespace WinUI_ASP.NET_Basics.Controllers
 
                     db.SaveChanges();
 
-                    return Ok(existingPizza);
+                    return Ok();
                 }
             }
             catch (Exception ex)
